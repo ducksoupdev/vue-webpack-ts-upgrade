@@ -1,5 +1,5 @@
 var webpackConfig = require('./webpack.config');
-
+var webpack = require('webpack');
 webpackConfig.module.rules = [{
     test: /\.ts$/,
     exclude: /node_modules/,
@@ -31,9 +31,16 @@ module.exports = function (config) {
       'src/test.ts': ['webpack', 'sourcemap']
     },
     webpack: {
-      devtool: 'source-map',
+      devtool: '#inline-source-map',
       resolve: webpackConfig.resolve,
-      module: webpackConfig.module
+      module: webpackConfig.module,
+      plugins: [
+  
+  new webpack.SourceMapDevToolPlugin({
+    filename: null, // if no value is provided the sourcemap is inlined
+    test: /\.(ts|js)($|\?)/i 
+  })
+]
     },
     webpackServer: {
       noInfo: true
